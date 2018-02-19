@@ -12,3 +12,13 @@
 
 # Project-local glide cache, RE: https://github.com/Masterminds/glide/issues/736
 .glide/
+
+# Intellij
+.idea/
+*.*
+
+# SublimeText
+*.sublime-workspace
+
+# Docker
+db/pgdata

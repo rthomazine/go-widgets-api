@@ -1,0 +1,43 @@
+DROP DATABASE IF EXISTS widgets_db;
+CREATE DATABASE widgets_db;
+
+CREATE USER widgetsuser WITH PASSWORD 'ChangeMe123.';
+GRANT ALL PRIVILEGES ON DATABASE "widgets_db" TO widgetsuser;
+
+DROP SCHEMA IF EXISTS widgets;
+CREATE SCHEMA widgets;
+ALTER SCHEMA widgets OWNER TO widgetsuser;
+
+DROP TABLE IF EXISTS widgets.user_token;
+CREATE TABLE widgets.user_token (
+  id    SERIAL PRIMARY KEY,
+  usercode  VARCHAR(100) NOT NULL,
+  usertoken VARCHAR(255) UNIQUE NOT NULL,
+  created TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
+  expires TIMESTAMP WITHOUT TIME ZONE NOT NULL
+);
+ALTER TABLE widgets.user_token OWNER TO widgetsuser;
+
+DROP TABLE IF EXISTS widgets.users;
+CREATE TABLE widgets.users (
+  id    SERIAL PRIMARY KEY,
+  name  VARCHAR(100) NOT NULL,
+  gravatar VARCHAR(255) NOT NULL,
+  created TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
+  updated TIMESTAMP WITHOUT TIME ZONE
+);
+ALTER TABLE widgets.users OWNER TO widgetsuser;
+
+DROP TABLE IF EXISTS widgets.widgets;
+CREATE TABLE widgets.widgets (
+  id    SERIAL PRIMARY KEY,
+  name  VARCHAR(100) NOT NULL,
+  color VARCHAR(100) NOT NULL,
+  price VARCHAR(20) NOT NULL,
+  inventory INTEGER,
+  created TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
+  updated TIMESTAMP WITHOUT TIME ZONE
+);
+ALTER TABLE widgets.widgets OWNER TO widgetsuser;
+
+GRANT SELECT,INSERT,UPDATE,DELETE ON ALL TABLES IN SCHEMA widgets TO widgetsuser;
